@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Maranguape - Tela Principal</title>
+  <title>B2 - Tela Principal</title>
 
   <style>
     :root{
@@ -212,8 +212,8 @@
 
   <div class="container">
     <header>
-      <h1>História de Maranguape</h1>
-      <div class="subtitle">Aprenda sobre a História de Maranguape</div>
+      <h1>B2</h1>
+      <div class="subtitle">B2 Vocabulary</div>
     </header>
 
     <div class="question-box" id="questionBox">Carregando...</div>
@@ -240,7 +240,7 @@
   </div>
 
   <script>
- const questionsB2 = [
+ const questions = [
 { q:'Qual a tradução para a palavra Ambitious?', choices:['Ambição','Amor','Ódio','Amizade','Força'], answer:0, explain:'"She is very ambitious and wants to be a doctor." (Ela é muito ambiciosa e quer ser médica.)' },
 { q:'Qual a tradução para a palavra Confident?', choices:['Tímido','Confiante','Triste','Cansado','Raivoso'], answer:1, explain:'"He feels confident about his exam." (Ele se sente confiante sobre a prova.)' },
 { q:'Qual a tradução para a palavra Curious?', choices:['Generoso','Preguiçoso','Curioso','Amigável','Honesto'], answer:2, explain:'"The child is curious about the world." (A criança está curiosa sobre o mundo.)' },
@@ -285,7 +285,6 @@
 { q:'Qual a tradução para a palavra Impatient?', choices:['Paciente','Impaciente','Calmo','Generoso','Tímido'], answer:1, explain:'"She is impatient and hates waiting." (Ela é impaciente e odeia esperar.)' },
 { q:'Qual a tradução para a palavra Grateful?', choices:['Ingrato','Grato','Calmo','Generoso','Tímido'], answer:1, explain:'"He is grateful for the help he received." (Ele é grato pela ajuda que recebeu.)' }
 ];
-
 
     let current = Math.floor(Math.random() * questions.length);
 let selected = null;
@@ -366,4 +365,5 @@ let selected = null;
 
 </body>
 </html>
+
 
