@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Maranguape - Tela Principal</title>
+
+  <style>
+    :root{
+      --blue-start:#4DA0FF;
+      --blue-end:#0056D6;
+      --accent:#00E0FF;
+      --success:#16a34a;
+      --danger:#ef4444;
+      --panel:#ffffff;
+      --text:#012a6b;
+      --muted:#5b6b84;
+    }
+
+    *{
+      box-sizing:border-box;
+      font-family:Inter, system-ui, -apple-system, 'Segoe UI', Roboto, Arial, Helvetica, sans-serif;
+    }
+
+    html,body{
+      margin:0;
+      height:100%;
+    }
+
+    /* fundo moderno */
+    body{
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:#003058;
+      padding:22px;
+    }
+
+    /* quadro mais magrinho */
+    .container{
+      width:100%;
+      max-width:600px;
+      background:var(--panel);
+      border-radius:18px;
+      padding:24px;
+      box-shadow:0 12px 40px rgba(0,0,0,0.15);
+      border:1px solid rgba(255,255,255,0.15);
+    }
+
+    header{
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      gap:4px;
+      margin-bottom:16px;
+    }
+
+    h1{
+      margin:0;
+      font-size:20px;
+      font-weight:800;
+      color:var(--text);
+      letter-spacing:0.5px;
+    }
+
+    .subtitle{
+      color:var(--muted);
+      font-size:14px;
+    }
+
+    /* caixa de pergunta */
+    .question-box{
+      background:#fff;
+      border-radius:14px;
+      padding:16px;
+      border:1px solid rgba(1,42,107,0.08);
+      box-shadow:0 6px 16px rgba(0,0,0,0.06);
+      font-weight:700;
+      color:var(--text);
+      font-size:16px;
+      margin-bottom:14px;
+      white-space:pre-wrap;
+      word-wrap:break-word;
+    }
+
+    /* alternativas */
+    .options{display:grid;gap:10px;}
+
+    .opt{
+      display:flex;
+      gap:12px;
+      padding:14px;
+      border-radius:14px;
+      background:#ffffff;
+      border:1px solid rgba(1,42,107,0.06);
+      cursor:pointer;
+      transition:0.15s ease;
+      box-shadow:0 4px 12px rgba(0,0,0,0.04);
+    }
+
+    .opt:hover{
+      transform:translateY(-3px);
+      box-shadow:0 10px 25px rgba(0,0,0,0.10);
+    }
+
+    .bullet{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      background:linear-gradient(135deg,#e8f3ff,#d9ecff);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      font-weight:800;
+      color:var(--text);
+    }
+
+    .opt .content{
+      flex:1;
+      font-size:15px;
+      color:var(--text);
+      font-weight:600;
+    }
+
+    .opt.selected{
+      border-color:var(--accent);
+      background:linear-gradient(135deg,#eefcff,#e3f9ff);
+    }
+
+    .opt.correct{
+      border-color:var(--success);
+      background:linear-gradient(135deg,#f0fff4,#e4ffe8);
+    }
+
+    .opt.wrong{
+      border-color:var(--danger);
+      background:#ffecec;
+    }
+
+    /* explicação */
+    .explain{
+      display:none;
+      margin-top:12px;
+      padding:12px;
+      border-radius:12px;
+      background:#f7fdf7;
+      border:1px solid rgba(0,0,0,0.05);
+      color:var(--muted);
+    }
+
+    .explain.show{
+      display:block;
+    }
+
+    /* botão enviar */
+    .actions{
+      display:flex;
+      justify-content:flex-end;
+      margin-top:14px;
+    }
+
+    .btn{
+      padding:10px 20px;
+      border-radius:14px;
+      border:none;
+      font-weight:700;
+      cursor:pointer;
+      transition:0.15s;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,var(--accent),var(--blue-start));
+      color:#00324d;
+      box-shadow:0 8px 22px rgba(0,0,0,0.10);
+    }
+
+    /* modal de acerto */
+    .modal-backdrop{
+      position:fixed;
+      inset:0;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      background:rgba(0,0,0,0.45);
+    }
+
+    .modal-backdrop.show{
+      display:flex;
+    }
+
+    .modal{
+      background:white;
+      padding:22px;
+      border-radius:14px;
+      width:90%;
+      max-width:340px;
+      text-align:center;
+      box-shadow:0 20px 60px rgba(0,0,0,0.3);
+    }
+
+    /* responsivo */
+    @media(max-width:500px){
+      .container{padding:18px;}
+      .question-box{font-size:15px;}
+      .opt .content{font-size:14px;}
+      .bullet{width:36px;height:36px;}
+    }
+
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>História de Maranguape</h1>
+      <div class="subtitle">Aprenda sobre a História de Maranguape</div>
+    </header>
+
+    <div class="question-box" id="questionBox">Carregando...</div>
+
+    <div id="options" class="options"></div>
+
+    <div id="explainBox" class="explain">
+      <strong>Explicação:</strong>
+      <div id="explainText" style="margin-top:6px"></div>
+    </div>
+
+    <div class="actions">
+      <button id="btnSubmit" class="btn btn-primary">Enviar</button>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-backdrop" id="modal">
+    <div class="modal">
+      <h2>Parabéns!</h2>
+      <p>Você acertou! Continue assim.</p>
+      <button id="modalNext" class="btn btn-primary" style="margin-top:10px;">Próxima</button>
+    </div>
+  </div>
+
+  <script>
+ const questionsB2 = [
+{ q:'Qual a tradução para a palavra Ambitious?', choices:['Ambição','Amor','Ódio','Amizade','Força'], answer:0, explain:'"She is very ambitious and wants to be a doctor." (Ela é muito ambiciosa e quer ser médica.)' },
+{ q:'Qual a tradução para a palavra Confident?', choices:['Tímido','Confiante','Triste','Cansado','Raivoso'], answer:1, explain:'"He feels confident about his exam." (Ele se sente confiante sobre a prova.)' },
+{ q:'Qual a tradução para a palavra Curious?', choices:['Generoso','Preguiçoso','Curioso','Amigável','Honesto'], answer:2, explain:'"The child is curious about the world." (A criança está curiosa sobre o mundo.)' },
+{ q:'Qual a tradução para a palavra Generous?', choices:['Preguiçoso','Triste','Bravo','Generoso','Rápido'], answer:3, explain:'"She is generous with her time." (Ela é generosa com o tempo dela.)' },
+{ q:'Qual a tradução para a palavra Lazy?', choices:['Feliz','Triste','Sociável','Amável','Preguiçoso'], answer:4, explain:'"He is too lazy to clean his room." (Ele é preguiçoso demais para limpar o quarto.)' },
+{ q:'Qual a tradução para a palavra Polite?', choices:['Educado','Tímido','Triste','Rude','Sério'], answer:0, explain:'"The student is polite to everyone." (O aluno é educado com todos.)' },
+{ q:'Qual a tradução para a palavra Reliable?', choices:['Preguiçoso','Confiável','Amável','Honesto','Tímido'], answer:1, explain:'"My friend is very reliable." (Meu amigo é muito confiável.)' },
+{ q:'Qual a tradução para a palavra Shy?', choices:['Amigável','Triste','Generoso','Curioso','Tímido'], answer:4, explain:'"The boy is shy at school." (O menino é tímido na escola.)' },
+{ q:'Qual a tradução para a palavra Sensitive?', choices:['Confiante','Preguiçoso','Sociável','Feliz','Sensível'], answer:4, explain:'"She is sensitive to criticism." (Ela é sensível a críticas.)' },
+{ q:'Qual a tradução para a palavra Honest?', choices:['Preguiçoso','Amigável','Curioso','Rude','Honesto'], answer:4, explain:'"He is honest with his parents." (Ele é honesto com seus pais.)' },
+{ q:'Qual a tradução para a palavra Clever?', choices:['Inteligente','Preguiçoso','Rápido','Honesto','Amigável'], answer:0, explain:'"The clever student solved the problem quickly." (O estudante inteligente resolveu o problema rapidamente.)' },
+{ q:'Qual a tradução para a palavra Friendly?', choices:['Amigável','Rude','Timido','Triste','Honesto'], answer:0, explain:'"She is friendly to everyone at school." (Ela é amigável com todos na escola.)' },
+{ q:'Qual a tradução para a palavra Independent?', choices:['Dependente','Independente','Preguiçoso','Generoso','Curioso'], answer:1, explain:'"He wants to be independent from his parents." (Ele quer ser independente dos pais.)' },
+{ q:'Qual a tradução para a palavra Outgoing?', choices:['Tímido','Sociável','Preguiçoso','Quieto','Curioso'], answer:1, explain:'"She is outgoing and enjoys meeting new people." (Ela é extrovertida e gosta de conhecer novas pessoas.)' },
+{ q:'Qual a tradução para a palavra Creative?', choices:['Criativo','Preguiçoso','Rápido','Lento','Sociável'], answer:0, explain:'"The artist is very creative." (O artista é muito criativo.)' },
+{ q:'Qual a tradução para a palavra Patient?', choices:['Impaciente','Paciente','Tímido','Preguiçoso','Curioso'], answer:1, explain:'"The teacher is patient with her students." (A professora é paciente com os alunos.)' },
+{ q:'Qual a tradução para a palavra Stubborn?', choices:['Teimoso','Flexível','Generoso','Tímido','Curioso'], answer:0, explain:'"He is stubborn and never changes his mind." (Ele é teimoso e nunca muda de ideia.)' },
+{ q:'Qual a tradução para a palavra Nervous?', choices:['Calmo','Nervoso','Feliz','Triste','Tímido'], answer:1, explain:'"She feels nervous before the presentation." (Ela se sente nervosa antes da apresentação.)' },
+{ q:'Qual a tradução para a palavra Enthusiastic?', choices:['Desanimado','Entusiasmado','Preguiçoso','Calmo','Rude'], answer:1, explain:'"He is enthusiastic about the new project." (Ele está entusiasmado com o novo projeto.)' },
+{ q:'Qual a tradução para a palavra Cheerful?', choices:['Alegre','Triste','Calmo','Nervoso','Tímido'], answer:0, explain:'"The child is cheerful and always smiles." (A criança é alegre e sempre sorri.)' },
+{ q:'Qual a tradução para a palavra Anxious?', choices:['Calmo','Ansioso','Feliz','Triste','Preguiçoso'], answer:1, explain:'"She is anxious about the exam results." (Ela está ansiosa com os resultados da prova.)' },
+{ q:'Qual a tradução para a palavra Charming?', choices:['Charmoso','Feio','Preguiçoso','Tímido','Generoso'], answer:0, explain:'"The actor is charming and polite." (O ator é charmoso e educado.)' },
+{ q:'Qual a tradução para a palavra Mature?', choices:['Imaturo','Maduro','Tímido','Calmo','Preguiçoso'], answer:1, explain:'"He is mature for his age." (Ele é maduro para a idade dele.)' },
+{ q:'Qual a tradução para a palavra Responsible?', choices:['Irresponsável','Responsável','Preguiçoso','Calmo','Generoso'], answer:1, explain:'"She is responsible for the whole team." (Ela é responsável por toda a equipe.)' },
+{ q:'Qual a tradução para a palavra Sociable?', choices:['Tímido','Sociável','Preguiçoso','Calmo','Generoso'], answer:1, explain:'"He is sociable and likes parties." (Ele é sociável e gosta de festas.)' },
+{ q:'Qual a tradução para a palavra Talkative?', choices:['Falador','Quieto','Preguiçoso','Calmo','Generoso'], answer:0, explain:'"The student is talkative in class." (O aluno é falador na aula.)' },
+{ q:'Qual a tradução para a palavra Brave?', choices:['Covarde','Corajoso','Preguiçoso','Calmo','Generoso'], answer:1, explain:'"The firefighter was brave during the rescue." (O bombeiro foi corajoso durante o resgate.)' },
+{ q:'Qual a tradução para a palavra Loyal?', choices:['Desleal','Leal','Preguiçoso','Calmo','Generoso'], answer:1, explain:'"She is loyal to her friends." (Ela é leal aos amigos.)' },
+{ q:'Qual a tradução para a palavra Wise?', choices:['Sábio','Tolo','Preguiçoso','Calmo','Generoso'], answer:0, explain:'"The old man is wise and gives good advice." (O homem idoso é sábio e dá bons conselhos.)' },
+{ q:'Qual a tradução para a palavra Practical?', choices:['Prático','Teórico','Preguiçoso','Calmo','Generoso'], answer:0, explain:'"She is practical and solves problems quickly." (Ela é prática e resolve problemas rapidamente.)' },
+{ q:'Qual a tradução para a palavra Modest?', choices:['Modesto','Orgulhoso','Preguiçoso','Calmo','Generoso'], answer:0, explain:'"He is modest about his achievements." (Ele é modesto sobre suas conquistas.)' },
+{ q:'Qual a tradução para a palavra Optimistic?', choices:['Pessimista','Otimista','Triste','Calmo','Generoso'], answer:1, explain:'"She is optimistic about the future." (Ela é otimista sobre o futuro.)' },
+{ q:'Qual a tradução para a palavra Pessimistic?', choices:['Pessimista','Otimista','Triste','Calmo','Generoso'], answer:0, explain:'"He is pessimistic about the results." (Ele é pessimista sobre os resultados.)' },
+{ q:'Qual a tradução para a palavra Flexible?', choices:['Rígido','Flexível','Calmo','Preguiçoso','Generoso'], answer:1, explain:'"She is flexible and adapts easily." (Ela é flexível e se adapta facilmente.)' },
+{ q:'Qual a tradução para a palavra Determined?', choices:['Indeciso','Determinado','Calmo','Preguiçoso','Generoso'], answer:1, explain:'"He is determined to finish the project." (Ele está determinado a terminar o projeto.)' },
+{ q:'Qual a tradução para a palavra Imaginative?', choices:['Criativo','Preguiçoso','Calmo','Generoso','Tímido'], answer:0, explain:'"The writer is very imaginative." (O escritor é muito criativo.)' },
+{ q:'Qual a tradução para a palavra Introverted?', choices:['Introvertido','Extrovertido','Preguiçoso','Calmo','Generoso'], answer:0, explain:'"He is introverted and likes to read alone." (Ele é introvertido e gosta de ler sozinho.)' },
+{ q:'Qual a tradução para a palavra Extroverted?', choices:['Introvertido','Extrovertido','Preguiçoso','Calmo','Generoso'], answer:1, explain:'"She is extroverted and enjoys social events." (Ela é extrovertida e gosta de eventos sociais.)' },
+{ q:'Qual a tradução para a palavra Hardworking?', choices:['Preguiçoso','Trabalhador','Calmo','Generoso','Tímido'], answer:1, explain:'"He is hardworking and finishes tasks on time." (Ele é trabalhador e termina as tarefas no prazo.)' },
+{ q:'Qual a tradução para a palavra Adventurous?', choices:['Medroso','Aventureiro','Calmo','Generoso','Tímido'], answer:1, explain:'"She is adventurous and likes to travel." (Ela é aventureira e gosta de viajar.)' },
+{ q:'Qual a tradução para a palavra Cautious?', choices:['Cauteloso','Aventureiro','Calmo','Generoso','Tímido'], answer:0, explain:'"He is cautious when crossing the street." (Ele é cauteloso ao atravessar a rua.)' },
+{ q:'Qual a tradução para a palavra Impatient?', choices:['Paciente','Impaciente','Calmo','Generoso','Tímido'], answer:1, explain:'"She is impatient and hates waiting." (Ela é impaciente e odeia esperar.)' },
+{ q:'Qual a tradução para a palavra Grateful?', choices:['Ingrato','Grato','Calmo','Generoso','Tímido'], answer:1, explain:'"He is grateful for the help he received." (Ele é grato pela ajuda que recebeu.)' }
+];
+
+
+    let current = Math.floor(Math.random() * questions.length);
+let selected = null;
+
+    const questionBox=document.getElementById("questionBox");
+    const opts=document.getElementById("options");
+    const explainBox=document.getElementById("explainBox");
+    const explainText=document.getElementById("explainText");
+    const btnSubmit=document.getElementById("btnSubmit");
+    const modal=document.getElementById("modal");
+    const modalNext=document.getElementById("modalNext");
+
+    function renderQuestion(){
+      const item=questions[current];
+      questionBox.textContent=item.q;
+
+      opts.innerHTML="";
+      explainBox.classList.remove("show");
+      btnSubmit.textContent="Enviar";
+      selected=null;
+
+      item.choices.forEach((c,i)=>{
+        const div=document.createElement("div");
+        div.className="opt";
+        div.setAttribute("data-index",i);
+
+        const bullet=document.createElement("div");
+        bullet.className="bullet";
+        bullet.textContent=String.fromCharCode(65+i);
+
+        const content=document.createElement("div");
+        content.className="content";
+        content.textContent=c;
+
+        div.appendChild(bullet);
+        div.appendChild(content);
+
+        div.onclick=()=>selectOption(div,i);
+
+        opts.appendChild(div);
+      });
+    }
+
+    function selectOption(el,index){
+      opts.querySelectorAll(".opt").forEach(o=>o.classList.remove("selected"));
+      el.classList.add("selected");
+      selected=index;
+    }
+
+    function handleSubmit(){
+      if(selected===null){alert("Escolha uma alternativa!");return;}
+
+      const item=questions[current];
+      const isCorrect=(selected===item.answer);
+
+      if(isCorrect){
+        modal.classList.add("show");
+      }else{
+        opts.querySelectorAll(".opt")[item.answer].classList.add("correct");
+        opts.querySelector(`.opt[data-index="${selected}"]`).classList.add("wrong");
+        explainText.textContent=item.explain;
+        explainBox.classList.add("show");
+        btnSubmit.textContent="Próxima";
+      }
+    }
+
+    function goNext(){
+      modal.classList.remove("show");
+      current=(current+1)%questions.length;
+      renderQuestion();
+    }
+
+    btnSubmit.onclick=()=> btnSubmit.textContent==="Enviar" ? handleSubmit() : goNext();
+    modalNext.onclick=goNext;
+
+    renderQuestion();
+  </script>
+
+</body>
+</html>
+
